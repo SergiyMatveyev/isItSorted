@@ -1,36 +1,24 @@
 function checkIsArraySorted(array) {
-  let start = findDifferentSiblings(array, 0),
-    way = compare(array[start], array[start + 1]);
-  return isSorted(array, way, start) ? (way ? "Yes, ASC" : "Yes, DESC") : "No";
-}
+  if (array[0] === array[array.length - 1]) return "No";
 
-function findDifferentSiblings(array, start) {
-  return array[start] !== array[start + 1]
-    ? start
-    : findDifferentSiblings(array, ++start);
-}
+  let direction;
 
-function compare(a, b) {
-  return a < b ? true : false;
-}
-
-function isSorted(array, way, start) {
-  start++;
-  if (start + 1 < array.length) {
-    let condition =
-      array[start] !== array[start + 1] &&
-      way !== compare(array[start], array[start + 1]);
-    return condition ? false : isSorted(array, way, ++start);
+  for (let i = 0; i < array.length - 1; i++) {
+    if (array[i] === array[i + 1]) continue;
+    if (direction === undefined) direction = array[i] < array[i + 1];
+    if (direction !== array[i] < array[i + 1]) return "No";
   }
-  return true;
+
+  return array[0] < array[array.length - 1] ? "Yes, ASC" : "Yes, DESC";
 }
 
 // Tests
 function test() {
   let testArray = [
+    [[1, 2, 3, 5, 5, 4], "No"],
+    [[4, 3, 3, 3, 2, 5], "No"],
     [[0, 0, 0, 1, 2, 3], "Yes, ASC"],
     [[1, 2, 3, 4, 5, 6], "Yes, ASC"],
-    [[1, 2, 3, 5, 5, 5], "Yes, ASC"],
     [[1, 2, 5, 5, 5, 6], "Yes, ASC"],
     [[9, 8, 7, 6, 5, 4], "Yes, DESC"],
     [[10, 10, 10, 3, 2, 1], "Yes, DESC"],
